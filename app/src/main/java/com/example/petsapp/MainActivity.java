@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,8 +43,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id==R.id.itmTopPets)
+        if(id==R.id.itmTopPets){
             goTopPets();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -71,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         i.putExtra("top",getTopPets());
         startActivity(i);
     }
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pets.clear();
+        addPets();
+        rvPets.setAdapter(new PetAdapter(pets,this));
+    }
 }
