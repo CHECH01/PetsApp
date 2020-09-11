@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolderPet>{
@@ -36,9 +38,18 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolderPet>{
         holder.imgPet.setImageResource(pet.getImgPet());
         holder.tvName.setText(pet.getName());
         holder.tvLikes.setText(String.valueOf(pet.getLikes()));
+        holder.imgPet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view,holder.tvName.getText(),Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
         if(activity.getClass().getName().equals(TopPets.class.getName()))
             holder.btnLike.setVisibility(View.INVISIBLE);
         else{
+            activity.registerForContextMenu(holder.imgPet);
+
             holder.btnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -46,6 +57,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolderPet>{
                     holder.tvLikes.setText(String.valueOf(pet.getLikes()));
                 }
             });
+
         }
 
     }

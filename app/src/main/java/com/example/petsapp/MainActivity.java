@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,6 +51,18 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu,menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        return super.onContextItemSelected(item);
+    }
+
+
     public void addPets(){
         pets.add(new Pets(R.drawable.tiger,"Tiger",11));
         pets.add(new Pets(R.drawable.lion,"Lion",15));
@@ -61,11 +74,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         pets.add(new Pets(R.drawable.dog,"Dog",6));
     }
     public ArrayList<Pets> getTopPets(){
-        ArrayList <Pets> topPets = new ArrayList<>();
-        Collections.sort(pets, Collections.<Pets>reverseOrder());
+        ArrayList<Pets> topPets = new ArrayList<>(pets);
+        Collections.sort(topPets, Collections.<Pets>reverseOrder());
 
-        for (int i = 0 ; i < 5; i++)
-            topPets.add(pets.get(i));
+        if (pets.size() > 5)
+            topPets.subList(5, pets.size()).clear();
 
         return topPets;
     }
@@ -74,11 +87,5 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         i.putExtra("top",getTopPets());
         startActivity(i);
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        pets.clear();
-        addPets();
-        rvPets.setAdapter(new PetAdapter(pets,this));
-    }
+
 }

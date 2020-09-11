@@ -4,4 +4,6 @@
     <string name="likes">0</string>
     <string name="top_pets">Top Pets</string>
     <string name="top_pets_activity">Top 5 Pets</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>
