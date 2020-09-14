@@ -1,4 +1,4 @@
-package com.example.petsapp;
+package com.example.petsapp.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -9,19 +9,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.petsapp.activity.MainActivity;
+import com.example.petsapp.fragment.HomeFragment;
+import com.example.petsapp.fragment.ProfileFragment;
+import com.example.petsapp.pojo.Pets;
+import com.example.petsapp.R;
+import com.example.petsapp.activity.TopPets;
 
 import java.util.ArrayList;
 
 public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolderPet>{
     ArrayList <Pets> pets;
     Activity activity;
+    Fragment fragment;
 
-    public PetAdapter(ArrayList<Pets> pets,Activity activity) {
+    public PetAdapter(ArrayList<Pets> pets,Activity activity, Fragment fragment) {
         this.pets = pets;
         this.activity = activity;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -38,27 +46,23 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolderPet>{
         holder.imgPet.setImageResource(pet.getImgPet());
         holder.tvName.setText(pet.getName());
         holder.tvLikes.setText(String.valueOf(pet.getLikes()));
-        holder.imgPet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view,holder.tvName.getText(),Snackbar.LENGTH_SHORT).show();
 
-            }
-        });
-        if(activity.getClass().getName().equals(TopPets.class.getName()))
+        if(activity.getClass().getName().equals(MainActivity.class.getName())){
+            if(fragment.getClass().getName().equals(HomeFragment.class.getName())){
+                activity.registerForContextMenu(holder.imgPet);
+                holder.tvName.setWidth(700);
+                holder.btnLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        pet.setLikes(pet.getLikes()+1);
+                        holder.tvLikes.setText(String.valueOf(pet.getLikes()));
+
+                    }
+                });
+            }else if(fragment.getClass().getName().equals(ProfileFragment.class.getName()))
+                holder.btnLike.setVisibility(View.INVISIBLE);
+        }else if(activity.getClass().getName().equals(TopPets.class.getName()))
             holder.btnLike.setVisibility(View.INVISIBLE);
-        else{
-            activity.registerForContextMenu(holder.imgPet);
-
-            holder.btnLike.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    pet.setLikes(pet.getLikes()+1);
-                    holder.tvLikes.setText(String.valueOf(pet.getLikes()));
-                }
-            });
-
-        }
 
     }
     @Override

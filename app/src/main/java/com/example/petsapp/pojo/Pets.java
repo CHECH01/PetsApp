@@ -1,4 +1,4 @@
-package com.example.petsapp;
+package com.example.petsapp.pojo;
 
 import android.os.Build;
 import android.os.Parcel;

@@ -6,4 +6,10 @@
         android:icon="@android:drawable/btn_star_big_on"
         android:title="@string/top_pets"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/itmContact"
+        android:title="@string/contact"/>
+    <item
+        android:id="@+id/itmAbout"
+        android:title="@string/about"/>
 </menu>
