@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petsapp.activity.MainActivity;
+import com.example.petsapp.db.PetsConstructor;
 import com.example.petsapp.fragment.HomeFragment;
 import com.example.petsapp.fragment.ProfileFragment;
 import com.example.petsapp.pojo.Pets;
@@ -42,27 +43,38 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.ViewHolderPet>{
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderPet holder, int position) {
         final Pets pet = pets.get(position);
+        final PetsConstructor petsConstructor = new PetsConstructor(activity);
 
         holder.imgPet.setImageResource(pet.getImgPet());
         holder.tvName.setText(pet.getName());
-        holder.tvLikes.setText(String.valueOf(pet.getLikes()));
 
         if(activity.getClass().getName().equals(MainActivity.class.getName())){
+
             if(fragment.getClass().getName().equals(HomeFragment.class.getName())){
+                pet.setLikes(petsConstructor.getLikes(pet));
+                holder.tvLikes.setText(String.valueOf(pet.getLikes()));
                 activity.registerForContextMenu(holder.imgPet);
                 holder.tvName.setWidth(700);
+
                 holder.btnLike.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         pet.setLikes(pet.getLikes()+1);
+                        petsConstructor.insertLike(pet);
                         holder.tvLikes.setText(String.valueOf(pet.getLikes()));
-
                     }
                 });
-            }else if(fragment.getClass().getName().equals(ProfileFragment.class.getName()))
+
+            }else if(fragment.getClass().getName().equals(ProfileFragment.class.getName())){
+                holder.tvLikes.setText(String.valueOf(pet.getLikes()));
                 holder.btnLike.setVisibility(View.INVISIBLE);
-        }else if(activity.getClass().getName().equals(TopPets.class.getName()))
+            }
+
+
+        }else if(activity.getClass().getName().equals(TopPets.class.getName())){
+            holder.tvLikes.setText(String.valueOf(pet.getLikes()));
             holder.btnLike.setVisibility(View.INVISIBLE);
+        }
 
     }
     @Override

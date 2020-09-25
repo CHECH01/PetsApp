@@ -10,12 +10,15 @@ public class Pets implements Comparable<Pets>, Parcelable {
     private int imgPet;
     private String name;
     private int likes;
+    private  int id;
 
     public Pets(int imgPet, String name, int likes) {
         this.imgPet = imgPet;
         this.name = name;
         this.likes = likes;
     }
+
+    public Pets() {}
 
     public int getImgPet() {
         return imgPet;
@@ -69,4 +72,19 @@ public class Pets implements Comparable<Pets>, Parcelable {
             return new Pets[size];
         }
     };
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+    public void setImgPet(int imgPet) {
+        this.imgPet = imgPet;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

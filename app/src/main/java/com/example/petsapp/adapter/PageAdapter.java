@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class PageAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> fragments;
+
     public PageAdapter(@NonNull FragmentManager fm, int behavior, ArrayList<Fragment> fragments) {
         super(fm, behavior);
         this.fragments = fragments;

@@ -10,12 +10,13 @@ import android.os.Bundle;
 
 import com.example.petsapp.R;
 import com.example.petsapp.adapter.PetAdapter;
+import com.example.petsapp.fragment.iHomeFragmentView;
 import com.example.petsapp.pojo.Pets;
+import com.example.petsapp.presenter.HomeFragmentPresenter;
 
 import java.util.ArrayList;
 
-public class TopPets extends AppCompatActivity {
-    ArrayList <Pets> topPets = new ArrayList<>();
+public class TopPets extends AppCompatActivity implements iHomeFragmentView {
     RecyclerView rvTopPets;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +30,22 @@ public class TopPets extends AppCompatActivity {
         this.setTitle(getString(R.string.top_pets_activity));
 
         rvTopPets = findViewById(R.id.rvTopPets);
+        new HomeFragmentPresenter(this,getBaseContext(),getClass().getName());
+    }
 
-        Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        topPets = (ArrayList<Pets>) extras.get("top");
-
+    @Override
+    public void generateVerticalLinearLayout() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvTopPets.setLayoutManager(linearLayoutManager);
+    }
 
-        rvTopPets.setAdapter(new PetAdapter(topPets,this,new Fragment()));
+    @Override
+    public PetAdapter createAdapter(ArrayList<Pets> pets) {
+        return new PetAdapter(pets,this,new Fragment());
+    }
+
+    @Override
+    public void initializeRecyclerViewAdapter(PetAdapter adapter) {
+        rvTopPets.setAdapter(adapter);
     }
 }
